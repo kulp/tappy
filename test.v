@@ -27,6 +27,9 @@ module test(output clk, dat);
         $display("Starting test");
         $dumpfile(logfile);
         $dumpvars;
+
+        for (integer j = 0; j < 16; j++)
+            push_byte(j);
     end
 
 endmodule
