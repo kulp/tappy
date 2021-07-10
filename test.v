@@ -46,3 +46,4 @@ module test(output clk, dat);
     end
 
 endmodule
+
