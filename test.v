@@ -3,7 +3,12 @@
 
 module test(output clk, dat);
 
-    initial
+    string logfile = "test.vcd";
+
+    initial begin
         $display("Starting test");
+        $dumpfile(logfile);
+        $dumpvars;
+    end
 
 endmodule

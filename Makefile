@@ -4,6 +4,8 @@ all: test
 
 run: run_test
 
+IVERILOGFLAGS += -g2012
+
 %: %.v
 	iverilog $(IVERILOGFLAGS) -o $@ $^
 
