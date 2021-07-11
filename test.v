@@ -27,6 +27,7 @@ module test(output clk, dat);
         push_bit(parity);
         parity = 1;
         push_bit(1);
+        clk = 1;
     endtask
 
     initial begin
