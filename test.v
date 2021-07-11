@@ -35,7 +35,11 @@ module test(output clk, dat);
         $dumpvars;
 
         for (integer j = 0; j < 16; j++)
+        begin
+            #4;
             push_byte(j);
+            #4;
+        end
     end
 
 endmodule
