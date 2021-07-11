@@ -17,11 +17,13 @@ module parse(input sysclk, clk, dat, output byte word, output reg done);
 
     task start;
         $display("Idle");
-        state = PROC;
-        if (dat != 0)
+        if (dat == 0)
+            state = PROC;
+        else
         begin
             $display("Bad (non-zero) start bit");
             $stop;
+            state = RSET;
         end
     endtask
 
@@ -41,20 +43,24 @@ module parse(input sysclk, clk, dat, output byte word, output reg done);
         else
         begin
             $display("Bad parity");
-            state = RSET;
             $stop;
+            state = RSET;
         end
     endtask
 
     task finish_word;
-        if (dat != 1)
+        if (dat == 1)
+        begin
+            $display("word=",word);
+            done = 1;
+            state = RSET;
+        end
+        else
         begin
             $display("Bad (zero) stop bit");
             $stop;
+            state = RSET;
         end
-        $display("word=",word);
-        done = 1;
-        state = RSET;
     endtask
 
     task reset_state;
