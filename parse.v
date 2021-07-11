@@ -48,7 +48,6 @@ module parse(input sysclk, clk, dat, output byte word, output reg done);
     task finish_word;
         if (dat == 1)
         begin
-            $display("word=",word);
             done = 1;
             state = RSET;
         end

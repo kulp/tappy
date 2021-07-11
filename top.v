@@ -11,8 +11,17 @@ module top;
     // then there is no phase relationship required between sysclk and clk.
     always #1 sysclk = ~sysclk;
 
+    byte word;
+    reg done;
+
     test  t(.clk, .dat);
-    parse p(.clk, .dat, .sysclk);
+    parse p(.clk, .dat, .sysclk, .word, .done);
+
+    always @(posedge sysclk)
+    begin
+        if (done)
+            $display("word=", word);
+    end
 
 endmodule
 
