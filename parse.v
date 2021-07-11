@@ -16,7 +16,6 @@ module parse(input sysclk, clk, dat, output byte word, output reg done);
     byte count;
 
     task start;
-        $display("Idle");
         if (dat == 0)
             state = PROC;
         else
@@ -28,7 +27,6 @@ module parse(input sysclk, clk, dat, output byte word, output reg done);
     endtask
 
     task handle_bit;
-        $display("Within word");
         parity ^= dat;
         word = {dat,word[7:1]};
         if (count == 7)
@@ -37,7 +35,6 @@ module parse(input sysclk, clk, dat, output byte word, output reg done);
     endtask
 
     task check_parity;
-        $display("Checking parity");
         if (dat == parity)
             state = DONE;
         else
@@ -64,7 +61,6 @@ module parse(input sysclk, clk, dat, output byte word, output reg done);
     endtask
 
     task reset_state;
-        $display("Resetting");
         parity = 1;
         word = 0;
         done = 0;
