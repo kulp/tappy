@@ -41,6 +41,8 @@ module test(output clk, dat);
             push_byte(j);
             #4;
         end
+
+        $finish;
     end
 
 endmodule
