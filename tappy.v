@@ -12,6 +12,19 @@ module tappy(input reset, sysclk, clk, dat, output byte word, output reg done);
 
     initial state = RSET;
 
+// Hide simulation-only constructs from yosys.
+`ifdef YOSYS
+    task ABORT;
+        state = RSET;
+    endtask
+`else
+    task ABORT(string message);
+        $display(message);
+        $stop;
+        state = RSET;
+    endtask
+`endif
+
     reg [1:0] clocks;
     byte shift;
 
@@ -19,11 +32,7 @@ module tappy(input reset, sysclk, clk, dat, output byte word, output reg done);
         if (dat == 0)
             state = PROC;
         else
-        begin
-            $display("Bad (non-zero) start bit");
-            $stop;
-            state = RSET;
-        end
+            ABORT("Bad (non-zero) start bit");
     endtask
 
     task handle_bit;
@@ -37,11 +46,7 @@ module tappy(input reset, sysclk, clk, dat, output byte word, output reg done);
         if (dat == ~^word)
             state = DONE;
         else
-        begin
-            $display("Bad parity");
-            $stop;
-            state = RSET;
-        end
+            ABORT("Bad parity");
     endtask
 
     task finish_word;
@@ -51,11 +56,7 @@ module tappy(input reset, sysclk, clk, dat, output byte word, output reg done);
             state = RSET;
         end
         else
-        begin
-            $display("Bad (zero) stop bit");
-            $stop;
-            state = RSET;
-        end
+            ABORT("Bad (zero) stop bit");
     endtask
 
     task reset_state;
