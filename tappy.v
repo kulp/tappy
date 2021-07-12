@@ -1,5 +1,4 @@
 `default_nettype none
-`timescale 10us/1us
 
 module tappy(input sysclk, clk, dat, output byte word, output reg done);
 
