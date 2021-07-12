@@ -1,5 +1,5 @@
 `default_nettype none
-`timescale 10us/1us
+`timescale 1us/100ns
 
 module test(output clk, dat, output byte compare);
 
@@ -8,11 +8,17 @@ module test(output clk, dat, output byte compare);
     reg clk = 1;
     reg dat = 1;
 
+    real freq;
+
+    task DELAY(real n);
+        #(n * 1_000_000.0 / freq);
+    endtask
+
     // Bits are pushed out on posedge, and should be read on negedge.
     task push_bit(input b);
-        #2 dat = b;
-        #2 clk = 0;
-        #4 clk = 1;
+        DELAY(0.25); dat = b;
+        DELAY(0.25); clk = 0;
+        DELAY(0.50); clk = 1;
     endtask
 
     task push_byte(byte word);
@@ -32,9 +38,10 @@ module test(output clk, dat, output byte compare);
 
         for (integer j = 0; j < $urandom_range(100,10); j++)
         begin
+            freq = $urandom_range(MAX_FREQ, MIN_FREQ);
             compare = $urandom();
             push_byte(compare);
-            #($urandom_range(100));
+            DELAY($urandom_range(20));
         end
 
         $finish;
