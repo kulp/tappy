@@ -7,7 +7,9 @@ module top;
     wire dat;
 
     reg sysclk = 0;
-    always #2 sysclk = ~sysclk;
+    // If the sysclk is at least four times as fast as the measured clock,
+    // then there is no phase relationship required between sysclk and clk.
+    always #1 sysclk = ~sysclk;
 
     test  t(.clk, .dat);
     parse p(.clk, .dat, .sysclk);
