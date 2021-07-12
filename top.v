@@ -1,8 +1,8 @@
 `default_nettype none
 `timescale 1us/100ns
 
-parameter real MIN_FREQ = 10_000.0;
-parameter real MAX_FREQ = 16_666.7;
+`define MIN_FREQ 10_000.0
+`define MAX_FREQ 16_666.7
 
 module top;
 
@@ -15,7 +15,7 @@ module top;
     // then there is no phase relationship required between sysclk and clk.
     // The `0.25` in the formula below represents the 4x clock; the division
     // by 2 represents the fact that the delay represents half a clock cycle.
-    always #(0.25 / 2 * 1_000_000.0 / MAX_FREQ) sysclk = ~sysclk;
+    always #(0.25 / 2 * 1_000_000.0 / `MAX_FREQ) sysclk = ~sysclk;
 
     byte word;
     byte compare;
