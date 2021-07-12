@@ -30,7 +30,7 @@ module test(output clk, dat, output byte compare);
         $dumpfile(logfile);
         $dumpvars(0, top);
 
-        for (byte j = 0; j < 16; j++)
+        for (integer j = 0; j < $urandom_range(100,10); j++)
         begin
             compare = $urandom();
             push_byte(compare);
