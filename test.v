@@ -1,10 +1,11 @@
 `default_nettype none
 `timescale 1us/100ns
 
-module test(output clk, dat, output byte compare);
+module test(output reset, clk, dat, output byte compare);
 
     string logfile = "test.vcd";
 
+    reg reset = 1;
     reg clk = 1;
     reg dat = 1;
 
@@ -44,6 +45,8 @@ module test(output clk, dat, output byte compare);
 
         if (! $value$plusargs("count=%d", count))
             count = $urandom_range(100,10);
+
+        #10 reset = 0;
 
         for (integer j = 0; j < count; j++)
         begin

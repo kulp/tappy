@@ -1,6 +1,6 @@
 `default_nettype none
 
-module tappy(input sysclk, clk, dat, output byte word, output reg done);
+module tappy(input reset, sysclk, clk, dat, output byte word, output reg done);
 
     enum {
         RSET,
@@ -8,7 +8,9 @@ module tappy(input sysclk, clk, dat, output byte word, output reg done);
         PROC,
         PRTY,
         DONE
-    } state = RSET;
+    } state;
+
+    initial state = RSET;
 
     reg [1:0] clocks;
     byte shift;
@@ -65,19 +67,22 @@ module tappy(input sysclk, clk, dat, output byte word, output reg done);
     endtask
 
     always @(posedge sysclk)
-    begin
-        clocks = {clocks[0],clk};
+        if (reset)
+            reset_state;
+        else
+        begin
+            clocks = {clocks[0],clk};
 
-        casez ({state,clocks})
-            {IDLE,2'b10}: start;
-            {PROC,2'b10}: handle_bit;
-            {PRTY,2'b10}: check_parity;
-            {DONE,2'b10}: finish_word;
-            {RSET,2'b??}: reset_state;
+            casez ({state,clocks})
+                {IDLE,2'b10}: start;
+                {PROC,2'b10}: handle_bit;
+                {PRTY,2'b10}: check_parity;
+                {DONE,2'b10}: finish_word;
+                {RSET,2'b??}: reset_state;
 
-            default: /* do nothing */;
-        endcase
-    end
+                default: /* do nothing */;
+            endcase
+        end
 
 endmodule
 

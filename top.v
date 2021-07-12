@@ -6,6 +6,7 @@ parameter real MAX_FREQ = 16_666.7;
 
 module top;
 
+    wire reset;
     wire clk;
     wire dat;
 
@@ -20,8 +21,8 @@ module top;
     byte compare;
     reg done;
 
-    test  t(.clk, .dat, .compare);
-    tappy p(.clk, .dat, .sysclk, .word, .done);
+    test  t(.clk, .dat, .compare, .reset);
+    tappy p(.clk, .dat, .sysclk, .word, .done, .reset);
 
     always @(posedge sysclk)
     begin
