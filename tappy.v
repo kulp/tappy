@@ -11,7 +11,7 @@ module tappy(input sysclk, clk, dat, output byte word, output reg done);
     } state = RSET;
 
     reg parity;
-    reg prevclk;
+    reg [1:0] clocks;
     byte count;
 
     task start;
@@ -63,13 +63,15 @@ module tappy(input sysclk, clk, dat, output byte word, output reg done);
         word = 0;
         done = 0;
         count = 0;
-        prevclk = 0;
+        clocks = 0;
         state = IDLE;
     endtask
 
     always @(posedge sysclk)
     begin
-        casez ({state,prevclk,clk})
+        clocks = {clocks[0],clk};
+
+        casez ({state,clocks})
             {IDLE,2'b10}: start;
             {PROC,2'b10}: handle_bit;
             {PRTY,2'b10}: check_parity;
@@ -78,8 +80,6 @@ module tappy(input sysclk, clk, dat, output byte word, output reg done);
 
             default: /* do nothing */;
         endcase
-
-        prevclk = clk;
     end
 
 endmodule
