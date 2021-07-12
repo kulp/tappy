@@ -12,15 +12,23 @@ module top;
     always #1 sysclk = ~sysclk;
 
     byte word;
+    byte compare;
     reg done;
 
-    test  t(.clk, .dat);
+    test  t(.clk, .dat, .compare);
     tappy p(.clk, .dat, .sysclk, .word, .done);
 
     always @(posedge sysclk)
     begin
         if (done)
+        begin
             $display("word=", word);
+            if (word != compare)
+            begin
+                $display("compare=", compare);
+                $stop;
+            end
+        end
     end
 
 endmodule

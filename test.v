@@ -1,7 +1,7 @@
 `default_nettype none
 `timescale 10us/1us
 
-module test(output clk, dat);
+module test(output clk, dat, output byte compare);
 
     string logfile = "test.vcd";
 
@@ -30,9 +30,10 @@ module test(output clk, dat);
         $dumpfile(logfile);
         $dumpvars(0, top);
 
-        for (integer j = 0; j < 16; j++)
+        for (byte j = 0; j < 16; j++)
         begin
             #4;
+            compare = j;
             push_byte(j);
             #4;
         end
