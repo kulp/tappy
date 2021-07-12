@@ -7,7 +7,6 @@ module test(output clk, dat);
 
     reg clk = 1;
     reg dat = 1;
-    reg parity = 1;
 
     // Bits are pushed out on posedge, and should be read on negedge.
     task push_bit(input b);
@@ -20,12 +19,8 @@ module test(output clk, dat);
         integer i;
         push_bit(0);
         for (i = 0; i < 8; i = i + 1)
-        begin
             push_bit(word[i]);
-            parity ^= word[i];
-        end
-        push_bit(parity);
-        parity = 1;
+        push_bit(~^word);
         push_bit(1);
         clk = 1;
     endtask
