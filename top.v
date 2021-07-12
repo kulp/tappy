@@ -15,7 +15,7 @@ module top;
     reg done;
 
     test  t(.clk, .dat);
-    parse p(.clk, .dat, .sysclk, .word, .done);
+    tappy p(.clk, .dat, .sysclk, .word, .done);
 
     always @(posedge sysclk)
     begin

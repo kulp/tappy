@@ -4,9 +4,9 @@ all: test
 
 run: run_test
 
-test: parse.v top.v
+test: tappy.v top.v
 
-verilate: parse.v
+verilate: tappy.v
 	verilator --cc $^
 
 IVERILOGFLAGS += -g2012
