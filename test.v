@@ -32,10 +32,9 @@ module test(output clk, dat, output byte compare);
 
         for (byte j = 0; j < 16; j++)
         begin
-            #4;
             compare = $urandom();
             push_byte(compare);
-            #4;
+            #($urandom_range(100));
         end
 
         $finish;
