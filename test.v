@@ -10,6 +10,9 @@ module test(output clk, dat, output byte compare);
 
     real freq;
 
+    integer seed = 0;
+    integer count = 0;
+
     task DELAY(real n);
         #(n * 1_000_000.0 / freq);
     endtask
@@ -36,7 +39,13 @@ module test(output clk, dat, output byte compare);
         $dumpfile(logfile);
         $dumpvars(0, top);
 
-        for (integer j = 0; j < $urandom_range(100,10); j++)
+        if ($value$plusargs("seed=%d", seed))
+            seed = $urandom(seed);
+
+        if (! $value$plusargs("count=%d", count))
+            count = $urandom_range(100,10);
+
+        for (integer j = 0; j < count; j++)
         begin
             freq = $urandom_range(MAX_FREQ, MIN_FREQ);
             compare = $urandom();
