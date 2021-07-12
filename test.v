@@ -33,7 +33,7 @@ module test(output clk, dat);
     initial begin
         $display("Starting test");
         $dumpfile(logfile);
-        $dumpvars;
+        $dumpvars(0, top);
 
         for (integer j = 0; j < 16; j++)
         begin
