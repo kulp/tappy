@@ -11,7 +11,7 @@ module tappy(input sysclk, clk, dat, output byte word, output reg done);
     } state = RSET;
 
     reg [1:0] clocks;
-    byte count;
+    byte shift;
 
     task start;
         if (dat == 0)
@@ -26,9 +26,9 @@ module tappy(input sysclk, clk, dat, output byte word, output reg done);
 
     task handle_bit;
         word = {dat,word[7:1]};
-        if (count == 7)
+        shift = {1'b1,shift[7:1]};
+        if (shift[0])
             state = PRTY;
-        count++;
     endtask
 
     task check_parity;
@@ -59,7 +59,7 @@ module tappy(input sysclk, clk, dat, output byte word, output reg done);
     task reset_state;
         word = 0;
         done = 0;
-        count = 0;
+        shift = 0;
         clocks = 0;
         state = IDLE;
     endtask
