@@ -1,6 +1,9 @@
 `default_nettype none
 `timescale 1us/100ns
 
+`define MIN_FREQ 10_000.0
+`define MAX_FREQ 16_666.7
+
 module test(output reset, clk, dat, output byte compare);
 
     string logfile = "test.vcd";
@@ -50,7 +53,7 @@ module test(output reset, clk, dat, output byte compare);
 
         for (integer j = 0; j < count; j++)
         begin
-            freq = $urandom_range(MAX_FREQ, MIN_FREQ);
+            freq = $urandom_range(`MAX_FREQ, `MIN_FREQ);
             compare = $urandom();
             push_byte(compare);
             DELAY($urandom_range(20));
