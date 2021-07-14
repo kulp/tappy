@@ -1,6 +1,10 @@
 `default_nettype none
 
-module tappy(input reset, sysclk, clk, dat, output byte word, output reg done);
+module tappy(
+    input reset, sysclk, inhibit,
+    inout clk, input dat,
+    output byte word, output reg done
+);
 
     enum {
         RSET,
@@ -27,6 +31,8 @@ module tappy(input reset, sysclk, clk, dat, output byte word, output reg done);
 
     reg [1:0] clocks;
     byte shift;
+
+    assign clk = inhibit ? '0 : 'z;
 
     task start;
         if (dat == 0)
@@ -68,7 +74,7 @@ module tappy(input reset, sysclk, clk, dat, output byte word, output reg done);
     endtask
 
     always @(posedge sysclk)
-        if (reset)
+        if (reset || inhibit)
             reset_state;
         else
         begin

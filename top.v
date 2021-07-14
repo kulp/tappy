@@ -22,7 +22,7 @@ module top;
     reg done;
 
     test  t(.clk, .dat, .compare, .reset);
-    tappy p(.clk, .dat, .sysclk, .word, .done, .reset);
+    tappy p(.clk, .dat, .sysclk, .word, .done, .reset, .inhibit('0));
 
     always @(posedge sysclk)
     begin
